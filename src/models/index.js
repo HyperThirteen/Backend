@@ -13,7 +13,6 @@ const sequelize = new Sequelize(
 db.board = require("./board")(sequelize, Sequelize);
 db.blacklist = require("./blacklist")(sequelize, Sequelize);
 db.category = require("./category")(sequelize, Sequelize);
-db.user = require("./user")(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {

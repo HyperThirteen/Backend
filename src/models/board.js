@@ -1,3 +1,5 @@
+const { DataTypes, Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   const Board = sequelize.define(
     "Board",
@@ -29,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Board.associate = function (models) {
+    // Board 모델이 정의된 후에 연관 관계 설정이 이루어져야 하므로 await sequelize.sync();를 제거합니다.
     Board.belongsTo(models.Category, {
       foreignKey: "c_id",
       targetKey: "c_id",
