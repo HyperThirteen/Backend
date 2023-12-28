@@ -39,7 +39,7 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const boards = await board.findAll({
-      attributes: ["id", "content", "createdAt", "c_id"],
+      attributes: ["id", "content", "title", "createdAt", "c_id"],
       include: [
         {
           model: category,

@@ -22,5 +22,5 @@ db.sequelize
   .catch(console.error);
 
 app.listen(port, () => {
-  console.log(`listening at https://localhost:${port}`);
+  console.log(`listening at http://localhost:${port}`);
 });
