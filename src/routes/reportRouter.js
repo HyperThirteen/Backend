@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
     // Create a new report in the blacklist
     const newReport = await models.blacklist.create({
       id: id,
-      // Add any other attributes if required
+      s_id: boardExists.s_id,
     });
 
     return res.status(201).json({ message: "게시글이 신고되었습니다." });
