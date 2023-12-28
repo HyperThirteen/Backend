@@ -5,7 +5,8 @@ const category = models.category;
 const board = models.board;
 
 router.post("/", async (req, res) => {
-  const { content, c_id } = req.body;
+  console.log(req);
+  const { content, c_id, title } = req.body;
   let { s_id } = req.body;
 
   if (!s_id) {
@@ -13,10 +14,11 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    console.log("Received data:", { s_id, content, c_id });
+    console.log("Received data:", { s_id, title, content, c_id });
 
     const newBoard = await board.create({
       s_id,
+      title,
       content,
       c_id,
     });
