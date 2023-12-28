@@ -11,14 +11,16 @@ module.exports = (sequelize, DataTypes) => {
       },
       s_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       content: {
         type: DataTypes.STRING(200),
         allowNull: false,
       },
       date: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: sequelize.NOW,
       },
       c_id: {
         type: DataTypes.INTEGER,
@@ -31,8 +33,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Board.associate = function (models) {
-    // Board 모델이 정의된 후에 연관 관계 설정이 이루어져야 하므로 await sequelize.sync();를 제거합니다.
-    Board.belongsTo(models.Category, {
+    Board.belongsTo(models.category, {
+      // 'models.category' 대신 'models.Category'
       foreignKey: "c_id",
       targetKey: "c_id",
       onDelete: "CASCADE",
