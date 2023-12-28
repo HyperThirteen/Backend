@@ -1,55 +1,52 @@
-// const express = require("express");
-// const axios = require("axios");
-// const bodyParser = require("body-parser");
+const axios = require("axios");
+const express = require("express");
+const router = express.Router();
 
-// const app = express();
-// const port = 3000; // You can change this to your desired port
+// OAuth Configuration
+const oauthBaseUrl = "https://auth.bssm.kro.kr/api/oauth";
 
-// app.use(bodyParser.json());
+// Token Issuance
+router.post("/token", async (req, res) => {
+  try {
+    const { clientId, clientSecret, authCode } = req.body;
 
-// // OAuth Configuration
-// const oauthBaseUrl = "https://auth.bssm.kro.kr/api/oauth";
+    // Make a request to the token endpoint
+    const tokenResponse = await axios.post(`${oauthBaseUrl}/token`, {
+      clientId,
+      clientSecret,
+      authCode,
+    });
 
-// // Token Issuance
-// app.post("/token", async (req, res) => {
-//   try {
-//     const { clientId, clientSecret, authCode } = req.body;
+    res.status(200).json({ token: tokenResponse.data.token });
+  } catch (error) {
+    // Handle errors
+    console.error("Token Issuance Error:", error.message);
+    res
+      .status(error.response?.status || 500)
+      .json(error.response?.data || { error: "Internal Server Error" });
+  }
+});
 
-//     // Make a request to the token endpoint
-//     const tokenResponse = await axios.post(`${oauthBaseUrl}/token`, {
-//       clientId,
-//       clientSecret,
-//       authCode,
-//     });
+// Resource Retrieval
+router.post("/resource", async (req, res) => {
+  try {
+    const { clientId, clientSecret, token } = req.body;
 
-//     res.status(200).json({ token: tokenResponse.data.token });
-//   } catch (error) {
-//     // Handle errors
-//     console.error(error);
-//     res.status(error.response.status || 500).json(error.response.data);
-//   }
-// });
+    // Make a request to the resource endpoint
+    const resourceResponse = await axios.post(`${oauthBaseUrl}/resource`, {
+      clientId,
+      clientSecret,
+      token,
+    });
 
-// // Resource Retrieval
-// app.post("/resource", async (req, res) => {
-//   try {
-//     const { clientId, clientSecret, token } = req.body;
+    res.status(200).json(resourceResponse.data);
+  } catch (error) {
+    // Handle errors
+    console.error("Resource Retrieval Error:", error.message);
+    res
+      .status(error.response?.status || 500)
+      .json(error.response?.data || { error: "Internal Server Error" });
+  }
+});
 
-//     // Make a request to the resource endpoint
-//     const resourceResponse = await axios.post(`${oauthBaseUrl}/resource`, {
-//       clientId,
-//       clientSecret,
-//       token,
-//     });
-
-//     res.status(200).json(resourceResponse.data);
-//   } catch (error) {
-//     // Handle errors
-//     console.error(error);
-//     res.status(error.response.status || 500).json(error.response.data);
-//   }
-// });
-
-// app.listen(port, () => {
-//   console.log(`Server is running at http://localhost:${port}`);
-// });
+module.exports = router;
